@@ -1,0 +1,55 @@
+(async function removeAllLikes() {
+    let totalRemoved = 0;
+    let emptyCount = 0;            // счётчик пустых прокруток подряд
+    const maxEmpty = 5;            // если 5 раз подряд не найдено ни одной кнопки — завершаем
+    const clickDelay = 400;        // мс между кликами
+    const scrollPause = 1500;      // пауза после прокрутки
+    const scrollStep = 800;        // шаг прокрутки в пикселях
+    let iteration = 0;
+    const maxIterations = 500;     // макс. число прокруток
+
+    console.log('🔄 Начинаем удаление лайков...');
+
+    while (iteration < maxIterations) {
+        iteration++;
+        // Прокручиваем вниз
+        window.scrollBy(0, scrollStep);
+        await new Promise(resolve => setTimeout(resolve, scrollPause));
+
+        // Ищем все залайканные кнопки
+        const likeButtons = document.querySelectorAll('button[aria-label="Нравится"][aria-pressed="true"]');
+        console.log(`🔍 [${iteration}] Найдено кнопок: ${likeButtons.length}`);
+
+        if (likeButtons.length === 0) {
+            emptyCount++;
+            console.log(`⚠️ Пустая прокрутка (${emptyCount}/${maxEmpty})`);
+            // Если несколько раз подряд пусто — возможно, всё уже удалено
+            if (emptyCount >= maxEmpty) {
+                console.log('✅ Достигнут предел пустых прокруток — вероятно, все лайки удалены.');
+                break;
+            }
+            continue;
+        } else {
+            emptyCount = 0; // сброс счётчика пустых, если найдены кнопки
+        }
+
+        // Кликаем по каждой найденной кнопке
+        for (let btn of likeButtons) {
+            btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            await new Promise(resolve => setTimeout(resolve, clickDelay));
+            btn.click();
+            totalRemoved++;
+            if (totalRemoved % 50 === 0) {
+                console.log(`📊 Прогресс: удалено ${totalRemoved} лайков`);
+            }
+        }
+
+        // Небольшая пауза после пакета кликов
+        await new Promise(resolve => setTimeout(resolve, 500));
+    }
+
+    console.log(`🎉 Готово! Удалено лайков: ${totalRemoved}`);
+    if (iteration >= maxIterations) {
+        console.log('⚠️ Достигнут лимит итераций. Возможно, остались невидимые лайки — попробуйте запустить скрипт ещё раз.');
+    }
+})();
