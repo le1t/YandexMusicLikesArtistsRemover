@@ -1,5 +1,5 @@
-# YandexMusicLikesArtistsRemover
-Удаляет лайки с артистов в вашей коллекции
+## YandexMusicLikesArtistsRemover
+#Удаляет лайки с артистов в вашей коллекции
 
 Зайдите по ссылке https://music.yandex.ru/collection/artists
 
