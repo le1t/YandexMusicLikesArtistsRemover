@@ -1,5 +1,5 @@
 # YandexMusicLikesArtistsRemover
-Удаляет все лайки с артистов в вашей коллекции
+Удаляет все лайки с артистов в вашей коллекции Яндекс Музыки
 
 Зайдите по ссылке https://music.yandex.ru/collection/artists через браузер Chrome                                                     
 Нажмите F12 и откройте Консоль                                             
